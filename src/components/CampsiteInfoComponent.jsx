@@ -1,5 +1,9 @@
 /* eslint-disable react/jsx-pascal-case */
 import React, { Component } from 'react';
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
+import { LocalForm, Control, Errors } from 'react-redux-form';
+import { Link } from 'react-router-dom';
 import {
     Card,
     CardImg,
@@ -15,10 +19,6 @@ import {
     Label,
     FormGroup,
 } from 'reactstrap';
-import { baseUrl } from '../shared/baseUrl';
-import { Loading } from './LoadingComponent';
-import { LocalForm, Control, Errors } from 'react-redux-form';
-import { Link } from 'react-router-dom';
 
 const maxLength = (len) => (val) => !val || val.length <= len;
 const minLength = (len) => (val) => val && val.length >= len;
@@ -42,7 +42,7 @@ class CommentForm extends Component {
 
     HandleSubmit(values) {
         this.ToggleModal();
-        this.props.addComment(
+        this.props.postComment(
             this.props.campsiteId,
             values.rating,
             values.author,
@@ -129,7 +129,7 @@ class CommentForm extends Component {
     }
 }
 
-function RenderComments({ comments, addComment, campsiteId }) {
+function RenderComments({ comments, postComment, campsiteId }) {
     return (
         <div className="col-md-5 m-1">
             <h4>Comments</h4>
@@ -148,7 +148,7 @@ function RenderComments({ comments, addComment, campsiteId }) {
                     </div>
                 );
             })}
-            <CommentForm campsiteId={campsiteId} addComment={addComment} />
+            <CommentForm campsiteId={campsiteId} postComment={postComment} />
         </div>
     );
 }
@@ -213,7 +213,7 @@ function CampsiteInfo(props) {
                     <RenderCampsite campsite={props.campsite} />
                     <RenderComments
                         comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         campsiteId={props.campsite.id}
                     />
                 </div>
